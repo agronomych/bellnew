@@ -1,5 +1,6 @@
 package ru.bellintegrator.practice;
 
+import org.h2.tools.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,9 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Locale;
 
 import static springfox.documentation.builders.PathSelectors.regex;
@@ -23,7 +27,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         SpringApplication app = new SpringApplication(Application.class);
         app.run(args);
     }
