@@ -1,9 +1,7 @@
-Bell Integrator пример для учебного задания java
+Учебное задание.
+Антон Суряпин
 ======================
-Репозиторий
--
-git - https://github.com/azEsm/empty_project
 
-Использовать Swagger UI
--
-Пример обращения http://localhost:8888//swagger-ui.html
+Репозиторий:
+
+https://github.com/agronomych/bellnew
