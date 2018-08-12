@@ -1,6 +1,10 @@
 package ru.bellintegrator.practice.docs.model;
 
+import ru.bellintegrator.practice.user.model.User;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "docs")
@@ -25,6 +29,9 @@ public class Doc {
      */
     @Column(nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "doc")
+    private Set<User> users;
 
     public Doc() {
     }
@@ -52,5 +59,20 @@ public class Doc {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Set<User> getUsers() {
+        if (users == null){
+            users = new HashSet<User>();
+        }
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

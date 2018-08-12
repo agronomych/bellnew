@@ -4,17 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.bellintegrator.practice.user.model.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserDaoImpl implements UserDao {
     @PersistenceContext
     private final EntityManager em;
@@ -61,17 +60,16 @@ public class UserDaoImpl implements UserDao {
         CriteriaUpdate<User> cUpdate = builder.createCriteriaUpdate(User.class);
         Root users = cUpdate.from(User.class);
         cUpdate.where(builder.equal(users.get("id"),user.getId()));
-        /*if (user.getPhone()!=null) cUpdate.set("phone",user.getPhone());
-        if (user.getFirstName()!=null) cUpdate.set("firstName",user.getFirstName());
-        if (user.getLastName()!=null) cUpdate.set("lastName",user.getLastName());
-        if (user.getMiddleName()!=null) cUpdate.set("middleName",user.getMiddleName());
-        if (user.getPosition()!=null) cUpdate.set("position",user.getPosition());
-        if (user.getOfficeId()!=null) cUpdate.set("officeId",user.getOfficeId());
         if (user.getPhone()!=null) cUpdate.set("phone",user.getPhone());
-        if (user.getCitizenshipId()!=null) cUpdate.set("citizenshipId",user.getCitizenshipId());
-        if (user.getDocId()!=null) cUpdate.set("docId",user.getDocId());
-        if (user.getDocNumber()!=null) cUpdate.set("docNumber",user.getDocNumber());
-        if (user.getDocDate()!=null) cUpdate.set("docDate",user.getDocDate());*/
+        if (user.getFirstname()!=null) cUpdate.set("firstname",user.getFirstname());
+        if (user.getLastname()!=null) cUpdate.set("lastname",user.getLastname());
+        if (user.getMiddlename()!=null) cUpdate.set("middlename",user.getMiddlename());
+        if (user.getPosition()!=null) cUpdate.set("position",user.getPosition());
+        if (user.getOfficeid()!=null) cUpdate.set("officeid",user.getOfficeid());
+        if (user.getCitizenshipid()!=null) cUpdate.set("citizenshipid",user.getCitizenshipid());
+        if (user.getDocid()!=null) cUpdate.set("docid",user.getDocid());
+        if (user.getDocnumber()!=null) cUpdate.set("docnumber",user.getDocnumber());
+        if (user.getDocdate()!=null) cUpdate.set("docdate",user.getDocdate());
         Query query = em.createQuery(cUpdate);
         query.executeUpdate();
     }

@@ -1,10 +1,11 @@
 package ru.bellintegrator.practice.office.model;
 
-import io.swagger.models.auth.In;
+import ru.bellintegrator.practice.organization.model.Organization;
 import ru.bellintegrator.practice.user.model.User;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "offices")
@@ -21,25 +22,29 @@ public class Office {
     @Version
     private Integer version;
 
-    private Integer orgid;
+    private String phone;
 
     private String name;
-
-    private String phone;
 
     private Boolean isactive;
 
     private String address;
 
-    /*@OneToMany(mappedBy = "office")
-    public List<User> users;*/
+    private Integer orgid;
 
-    public Integer getOrgId() {
+    @OneToMany(mappedBy = "office")
+    public Set<User> users;
+
+    @ManyToOne
+    @JoinColumn(name = "orgid", insertable = false, updatable = false)
+    public Organization organization;
+
+    public Integer getOrgid() {
         return orgid;
     }
 
-    public void setOrgId(Integer orgId) {
-        this.orgid = orgId;
+    public void setOrgid(Integer orgid) {
+        this.orgid = orgid;
     }
 
     public String getPhone() {
@@ -50,12 +55,12 @@ public class Office {
         this.phone = phone;
     }
 
-    public Boolean getActive() {
+    public Boolean getIsactive() {
         return isactive;
     }
 
-    public void setActive(Boolean active) {
-        this.isactive = active;
+    public void setIsactive(Boolean isactive) {
+        this.isactive = isactive;
     }
 
     public String getAddress() {
@@ -70,7 +75,7 @@ public class Office {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -81,4 +86,24 @@ public class Office {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Set<User> getUsers() {
+        if (users == null){
+            users = new HashSet<User>();
+        }
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
 }

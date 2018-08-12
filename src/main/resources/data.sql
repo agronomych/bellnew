@@ -52,4 +52,4 @@ INSERT INTO Users (officeId, firstName, lastName, middleName, position, docId, c
 INSERT INTO Users (officeId, firstName, lastName, middleName, position, docId, citizenshipId, phone, docNumber, docDate, isIdentified)
   VALUES (5,'Сунь','Пунь','Чунь','Директор',3,4,'89033353353','91959195','2001-02-08',true);
 INSERT INTO Users (officeId, firstName, lastName, middleName, position, docId, citizenshipId, phone, docNumber, docDate, isIdentified)
-  VALUES (5,'Иван','Миронов','Андреевич','Уборщик',4,2,'89048759864','6304548659','2002-19-19',false);
+  VALUES (5,'Иван','Миронов','Андреевич','Уборщик',4,2,'89048759864','6304548659','2002-10-1',false);

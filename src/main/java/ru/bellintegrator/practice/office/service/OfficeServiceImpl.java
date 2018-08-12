@@ -6,6 +6,8 @@ import ru.bellintegrator.practice.office.model.Office;
 import ru.bellintegrator.practice.office.view.OfficeView;
 import ru.bellintegrator.practice.office.dao.OfficeDao;
 import ma.glasnost.orika.*;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -22,7 +24,7 @@ public class OfficeServiceImpl implements OfficeService{
     }
 
     @Override
-    public List<OfficeView> offices(){
+    public List<OfficeView> offices() throws SQLException {
         List<Office> offices = officeDao.all();
         return offices.stream()
                 .map(mapOffice())
@@ -30,17 +32,17 @@ public class OfficeServiceImpl implements OfficeService{
     }
 
     @Override
-    public void saveOffice(OfficeView officeView){
+    public void saveOffice(OfficeView officeView) throws SQLException {
         officeDao.save(viewToOffice(officeView));
     }
 
     @Override
-    public void updateOffice(OfficeView officeView){
+    public void updateOffice(OfficeView officeView) throws SQLException {
         officeDao.update(viewToOffice(officeView));
     }
 
     @Override
-    public OfficeView loadById(int id){
+    public OfficeView loadById(int id) throws SQLException {
         return officeToView(officeDao.loadById(id));
     }
 
@@ -48,6 +50,11 @@ public class OfficeServiceImpl implements OfficeService{
         return o -> {
             return officeToView(o);
         };
+    }
+
+    @Override
+    public List<OfficeView> loadByOrgId(int orgId) throws SQLException {
+        return officeDao.loadByOrgId(orgId).stream().map(this::officeToView).collect(Collectors.toList());
     }
 
     private Office viewToOffice(OfficeView view){

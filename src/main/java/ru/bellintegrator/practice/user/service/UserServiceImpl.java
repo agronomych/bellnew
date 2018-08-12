@@ -9,6 +9,7 @@ import ru.bellintegrator.practice.user.dao.UserDao;
 import ru.bellintegrator.practice.user.model.User;
 import ru.bellintegrator.practice.user.view.UserView;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<UserView> users(){
+    public List<UserView> users() throws SQLException {
         List<User> offices = dao.all();
         return offices.stream()
                 .map(mapUser())
@@ -32,17 +33,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void saveUser(UserView view){
+    public void saveUser(UserView view) throws SQLException {
         dao.save(viewToUser(view));
     }
 
     @Override
-    public void updateUser(UserView view){
+    public void updateUser(UserView view) throws SQLException {
         dao.update(viewToUser(view));
     }
 
     @Override
-    public UserView loadById(int id){
+    public UserView loadById(int id) throws Exception {
         return userToView(dao.loadById(id));
     }
 

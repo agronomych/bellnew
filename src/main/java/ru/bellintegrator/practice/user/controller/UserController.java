@@ -1,14 +1,20 @@
 package ru.bellintegrator.practice.user.controller;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import ru.bellintegrator.practice.user.model.User;
 import ru.bellintegrator.practice.user.service.UserService;
 import ru.bellintegrator.practice.user.view.UserView;
 
+import java.sql.SQLException;
 import java.util.List;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.*;
 
 /** Контроллер для объекта Office
  * включает в себя следующее api:
@@ -40,12 +46,19 @@ public class UserController {
             @ApiResponse(code = 200, message = "Success", response = String.class),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
-    @PostMapping("/list")
-    @ResponseBody
-    public List<UserView> listUsers(@RequestBody List<UserView> users) {
-        users = userService.users();
-        return users;
+    @PostMapping(path = "/list", consumes = APPLICATION_JSON_VALUE)
+    public Object listUsers() {
+        List<UserView> views;
+        try {
+            views = userService.users();
+        }
+        catch (SQLException e){
+            return "{\"error\":"+"{Ошибка при получении списка пользователей "+e.getMessage()+"}";
+        }
+        if (views == null) return "{\"error\":\"Список пользователей пуст\"}";
+        return views;
     };
+
 
     /**
      * Блок для /save, сохраняет данные нового пользователя
@@ -57,8 +70,14 @@ public class UserController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
     @PostMapping("/save")
-    public void saveUser(@RequestBody UserView view) {
-        userService.saveUser(view);
+    public Object saveUser(@RequestBody UserView view) {
+        try{
+            userService.saveUser(view);
+        }
+        catch (SQLException e){
+            return  "{\"error\":"+"{Ошибка при сохранении пользователя "+e.getMessage()+"}";
+        }
+        return "{\"result\":\"success\"}";
     };
 
     /**
@@ -71,8 +90,14 @@ public class UserController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
     @PostMapping("/update")
-    public void updateUser(@RequestBody UserView view) {
-        userService.updateUser(view);
+    public Object updateUser(@RequestBody UserView view) {
+        try{
+            userService.updateUser(view);
+        }
+        catch (SQLException e){
+            return  "{\"error\":"+"{Ошибка при обновлении данных пользователя "+e.getMessage()+"}";
+        }
+        return "{\"result\":\"success\"";
     };
 
     /**
@@ -82,12 +107,17 @@ public class UserController {
     @ApiOperation(value = "id", nickname = "id",httpMethod = "GET")
     @GetMapping("/")
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public @ResponseBody UserView get(@RequestParam() int id) {
-        return userService.loadById(id);
+    public @ResponseBody Object get(@RequestParam() int id) {
+        UserView userView;
+        try{
+            userView = userService.loadById(id);
+        }
+        catch (Exception e){
+            return  "{\"error\":"+"{Ошибка при получении пользователя "+e.getMessage()+"}";
+        }
+        if (userView == null) return "{\"error\":\"Пользователь с id=\""+id+" не найден\"}";
+        return userView;
     }
-    public UserView loadById(){
-        UserView user = null;
 
-        return user;
-    }
+
 }

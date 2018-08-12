@@ -1,13 +1,17 @@
 package ru.bellintegrator.practice.office.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import ru.bellintegrator.practice.office.model.Office;
 import ru.bellintegrator.practice.office.service.OfficeService;
 import ru.bellintegrator.practice.office.view.OfficeView;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -42,9 +46,17 @@ public class OfficeController {
             @ApiResponse(code = 200, message = "Success", response = String.class),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
-    @PostMapping("/list")
-    public void listOffices(@RequestBody List<OfficeView> offices) {
-        offices = officeService.offices();
+    @PostMapping(path="/list", consumes = APPLICATION_JSON_VALUE)
+    public Object listOffices() {
+        List<OfficeView>  views;
+        try {
+            views = officeService.offices();
+        }
+        catch (SQLException e){
+            return "{\"error\":"+"{Ошибка при получении списка офисов "+e.getMessage()+"}";
+        }
+        if (views == null) return "{\"error\":\"Список офисов пустой\"}";
+        return views;
     };
 
     /**
@@ -56,9 +68,18 @@ public class OfficeController {
             @ApiResponse(code = 200, message = "Success", response = String.class),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
-    @PostMapping("/save")
-    public void saveOffice(@RequestBody OfficeView view) {
-        officeService.saveOffice(view);
+    @PostMapping(value = "/save", consumes = APPLICATION_JSON_VALUE)
+
+    public Object saveOffice(@RequestBody OfficeView view) {
+
+        System.out.println(view);
+        try{
+            officeService.saveOffice(view);
+        }
+        catch (SQLException e){
+            return  "{\"error\":"+"{Ошибка при сохранении офиса "+e.getMessage()+"}";
+        }
+        return "{\"result\":\"success\"}";
     };
 
     /**
@@ -71,8 +92,14 @@ public class OfficeController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
     @PostMapping("/update")
-    public void updateOffice(@RequestBody OfficeView view) {
-        officeService.updateOffice(view);
+    public Object updateOffice(@RequestBody OfficeView view) {
+        try{
+            officeService.updateOffice(view);
+        }
+        catch (SQLException e){
+            return  "{\"error\":"+"{Ошибка при обновлении данных офиса "+e.getMessage()+"}";
+        }
+        return "{\"result\":\"success\"}";
     };
 
     /**
@@ -82,12 +109,39 @@ public class OfficeController {
     @ApiOperation(value = "id", nickname = "id",httpMethod = "GET")
     @GetMapping("/")
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public @ResponseBody OfficeView get(@RequestParam() int id) {
-        return officeService.loadById(id);
+    public @ResponseBody Object getById(@RequestParam() int id) {
+        OfficeView officeView;
+        try{
+            officeView = officeService.loadById(id);
+        }
+        catch (SQLException e){
+            return  "{\"error\":"+"{Ошибка при получении данных офиса по id="+id+" "+e.getMessage()+"}";
+        }
+        if (officeView == null){
+            return "{\"error\":\"Офис с id="+id+" не найден\"}";
+        }
+        return officeView;
     }
-    public OfficeView loadById(){
-        OfficeView office = null;
 
-        return office;
+    /**
+     * Блок для /list/{orgId}, возвращает список офисов по id организации
+     * @param orgId
+     */
+    @ApiOperation(value = "orgId", nickname = "orgId", httpMethod = "POST")
+    @PostMapping("/list/")
+    @RequestMapping(value = "/list/", method = RequestMethod.POST)
+    public @ResponseBody Object getByOrgId(@RequestParam() int orgId){
+        List<OfficeView> views;
+        try {
+            views = officeService.loadByOrgId(orgId);
+        }
+        catch (SQLException e){
+            return "{\"error\":\"Ошибка при получении данных по офисам с id организаций id="+orgId+"\"}";
+        }
+        if (views.isEmpty()){
+            return "{\"error\":\"Офисов с id организации id="+orgId+" не найдено\"}";
+        }
+        return views;
     }
+
 }

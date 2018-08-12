@@ -8,7 +8,7 @@ public class OrganizationView {
 
     public String name;
 
-    public String fullName;
+    public String fullname;
 
     public String address;
 
@@ -18,10 +18,10 @@ public class OrganizationView {
 
     public String phone;
 
-    public Boolean isActive;
+    public Boolean isactive;
 
     @Override
     public String toString(){
-        return fullName+" "+address+" "+phone;
+        return fullname+" "+address+" "+phone;
     }
 }

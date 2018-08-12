@@ -9,6 +9,7 @@ import ru.bellintegrator.practice.organization.dao.OrganizationDao;
 import ru.bellintegrator.practice.organization.model.Organization;
 import ru.bellintegrator.practice.organization.view.OrganizationView;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,7 +25,7 @@ public class OrganizationServiceImpl implements OrganizationService{
     }
 
     @Override
-    public List<OrganizationView> organizations(){
+    public List<OrganizationView> organizations() throws SQLException {
         List<Organization> offices = organizationDao.all();
         return offices.stream()
                 .map(mapOrganization())
@@ -32,17 +33,17 @@ public class OrganizationServiceImpl implements OrganizationService{
     }
 
     @Override
-    public void saveOrganization(OrganizationView view){
+    public void saveOrganization(OrganizationView view) throws SQLException {
         organizationDao.save(viewToOrganization(view));
     }
 
     @Override
-    public void updateOrganization(OrganizationView view){
+    public void updateOrganization(OrganizationView view) throws SQLException {
         organizationDao.update(viewToOrganization(view));
     }
 
     @Override
-    public OrganizationView loadById(int id){
+    public OrganizationView loadById(int id) throws SQLException {
         return organizationToView(organizationDao.loadById(id));
     }
 

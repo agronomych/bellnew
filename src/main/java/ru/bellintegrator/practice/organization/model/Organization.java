@@ -1,6 +1,9 @@
 package ru.bellintegrator.practice.organization.model;
 
+import ru.bellintegrator.practice.office.model.Office;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "organizations")
@@ -31,6 +34,9 @@ public class Organization {
 
     private Boolean isactive;
 
+    @OneToMany(mappedBy = "organization")
+    public Set<Office> offices;
+
     /**
      * Конструктор для Hibernate
      */
@@ -54,12 +60,20 @@ public class Organization {
         this.inn = inn;
     }
 
-    public String getFullName() {
+    public String getFullname() {
         return fullname;
     }
 
-    public void setFullName(String fullName) {
-        this.fullname = fullName;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getKpp() {
@@ -86,15 +100,20 @@ public class Organization {
         this.phone = phone;
     }
 
-    public Boolean getActive() {
+    public Boolean getIsactive() {
         return isactive;
     }
 
-    public void setActive(Boolean active) {
-        isactive = active;
+    public void setIsactive(Boolean isactive) {
+        this.isactive = isactive;
     }
 
-    public Integer getId() {
-        return id;
+    public Set<Office> getOffices() {
+        return offices;
     }
+
+    public void setOffices(Set<Office> offices) {
+        this.offices = offices;
+    }
+
 }
