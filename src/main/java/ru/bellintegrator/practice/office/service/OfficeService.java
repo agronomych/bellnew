@@ -1,12 +1,13 @@
 package ru.bellintegrator.practice.office.service;
 
 import ru.bellintegrator.practice.office.view.OfficeView;
+import ru.bellintegrator.practice.office.view.OfficeViewList;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface OfficeService {
-    List<OfficeView> offices() throws SQLException;
+    List<OfficeViewList> offices() throws SQLException;
 
     void saveOffice(OfficeView office) throws SQLException ;
 
@@ -14,5 +15,5 @@ public interface OfficeService {
 
     OfficeView loadById(int id) throws SQLException ;
 
-    List<OfficeView> loadByOrgId(int orgId) throws SQLException;
+    List<OfficeViewList> loadByOrgId(int orgId) throws SQLException;
 }

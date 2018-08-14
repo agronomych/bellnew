@@ -1,15 +1,13 @@
 package ru.bellintegrator.practice.user.controller;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.bellintegrator.practice.user.model.User;
 import ru.bellintegrator.practice.user.service.UserService;
 import ru.bellintegrator.practice.user.view.UserView;
+import ru.bellintegrator.practice.user.view.UserViewList;
+
+import static ru.bellintegrator.practice.MyUtilities.packToData;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -48,7 +46,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "Failure")})
     @PostMapping(path = "/list", consumes = APPLICATION_JSON_VALUE)
     public Object listUsers() {
-        List<UserView> views;
+        List<UserViewList> views;
         try {
             views = userService.users();
         }
@@ -56,7 +54,7 @@ public class UserController {
             return "{\"error\":"+"{Ошибка при получении списка пользователей "+e.getMessage()+"}";
         }
         if (views == null) return "{\"error\":\"Список пользователей пуст\"}";
-        return views;
+        return packToData(views);
     };
 
 
@@ -116,7 +114,7 @@ public class UserController {
             return  "{\"error\":"+"{Ошибка при получении пользователя "+e.getMessage()+"}";
         }
         if (userView == null) return "{\"error\":\"Пользователь с id=\""+id+" не найден\"}";
-        return userView;
+        return packToData(userView);
     }
 
 

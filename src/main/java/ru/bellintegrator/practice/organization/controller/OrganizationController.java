@@ -5,14 +5,17 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.bellintegrator.practice.organization.model.Organization;
 import ru.bellintegrator.practice.organization.service.OrganizationService;
 import ru.bellintegrator.practice.organization.view.OrganizationView;
+import ru.bellintegrator.practice.organization.view.OrganizationViewList;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static ru.bellintegrator.practice.MyUtilities.packToData;
 
 /** Контроллер для объекта Organization
  * включает в себя следующее api:
@@ -46,7 +49,7 @@ public class OrganizationController {
             @ApiResponse(code = 500, message = "Failure")})
     @PostMapping(value = "/list", consumes = APPLICATION_JSON_VALUE)
     public Object listUsers() {
-        List<OrganizationView> views;
+        List<OrganizationViewList> views;
         try {
             views = organizationService.organizations();
         }
@@ -54,7 +57,7 @@ public class OrganizationController {
             return "{\"error\":"+"{Ошибка при получении списка организаций "+e.getMessage()+"}";
         }
         if (views == null) return "{\"error\":\"Список организаций пустой\"}";
-        return views;
+        return packToData(views);
     };
 
     /**
@@ -113,7 +116,7 @@ public class OrganizationController {
             return  "{\"error\":"+"{Ошибка при получении организации по id="+id+" "+e.getMessage()+"}";
         }
         if (organizationView == null) return "{\"error\":\"Организация с id="+id+" не найдена\"}";
-        return organizationView;
+        return packToData(organizationView);
     }
 
 

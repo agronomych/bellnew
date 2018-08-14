@@ -3,11 +3,11 @@ CREATE TABLE IF NOT EXISTS `Organizations` (
   `version` INT,
   `name` VARCHAR(100) NOT NULL,
   `inn` VARCHAR(100) NOT NULL,
-  `isActive` TINYINT NOT NULL,
+  `isActive` TINYINT NOT NULL default 1,
   `fullName` VARCHAR(100) NOT NULL,
   `kpp` VARCHAR(100) NOT NULL,
   `address` VARCHAR(100) NOT NULL,
-  `phone` VARCHAR(100) NOT NULL,
+  `phone` VARCHAR(100),
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -15,10 +15,10 @@ CREATE TABLE IF NOT EXISTS `Offices` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `version` INT,
   `orgId` INT NOT NULL,
-  `name` VARCHAR(100) NOT NULL,
-  `phone` VARCHAR(100) NOT NULL,
-  `isActive` TINYINT NOT NULL,
-  `address` VARCHAR(100) NOT NULL,
+  `name` VARCHAR(100),
+  `phone` VARCHAR(100),
+  `isActive` TINYINT default 1,
+  `address` VARCHAR(100),
   PRIMARY KEY (`id`),
   CONSTRAINT `orgId`
     FOREIGN KEY (`orgId`)
@@ -48,17 +48,17 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `version` INT,
-  `officeId` INT NOT NULL,
-  `firstName` VARCHAR(100) NOT NULL,
-  `lastName` VARCHAR(100) NOT NULL,
-  `middleName` VARCHAR(100) NOT NULL,
-  `position` VARCHAR(100) NOT NULL,
+  `officeId` INT,
+  `firstName` VARCHAR(100),
+  `lastName` VARCHAR(100),
+  `middleName` VARCHAR(100),
+  `position` VARCHAR(100),
   `docId` INT NULL default 0,
-  `citizenshipId` INT NULL default 0,
-  `phone` VARCHAR(100) NOT NULL,
-  `docNumber` VARCHAR(100) NOT NULL,
-  `docDate` VARCHAR(100) NOT NULL,
-  `isIdentified` TINYINT NOT NULL,
+  `citizenshipId` INT default 0,
+  `phone` VARCHAR(100),
+  `docNumber` VARCHAR(100),
+  `docDate` VARCHAR(100),
+  `isIdentified` TINYINT default 1,
   PRIMARY KEY (`id`),
   CONSTRAINT `officeId`
     FOREIGN KEY (`officeId`)

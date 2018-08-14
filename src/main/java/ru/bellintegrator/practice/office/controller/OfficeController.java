@@ -1,15 +1,15 @@
 package ru.bellintegrator.practice.office.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.bellintegrator.practice.office.model.Office;
 import ru.bellintegrator.practice.office.service.OfficeService;
 import ru.bellintegrator.practice.office.view.OfficeView;
+import ru.bellintegrator.practice.office.view.OfficeViewList;
+
+import static ru.bellintegrator.practice.MyUtilities.packToData;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -48,7 +48,7 @@ public class OfficeController {
             @ApiResponse(code = 500, message = "Failure")})
     @PostMapping(path="/list", consumes = APPLICATION_JSON_VALUE)
     public Object listOffices() {
-        List<OfficeView>  views;
+        List<OfficeViewList>  views;
         try {
             views = officeService.offices();
         }
@@ -56,7 +56,7 @@ public class OfficeController {
             return "{\"error\":"+"{Ошибка при получении списка офисов "+e.getMessage()+"}";
         }
         if (views == null) return "{\"error\":\"Список офисов пустой\"}";
-        return views;
+        return packToData(views);
     };
 
     /**
@@ -120,7 +120,7 @@ public class OfficeController {
         if (officeView == null){
             return "{\"error\":\"Офис с id="+id+" не найден\"}";
         }
-        return officeView;
+        return packToData(officeView);
     }
 
     /**
@@ -131,7 +131,7 @@ public class OfficeController {
     @PostMapping("/list/")
     @RequestMapping(value = "/list/", method = RequestMethod.POST)
     public @ResponseBody Object getByOrgId(@RequestParam() int orgId){
-        List<OfficeView> views;
+        List<OfficeViewList> views;
         try {
             views = officeService.loadByOrgId(orgId);
         }
@@ -141,7 +141,7 @@ public class OfficeController {
         if (views.isEmpty()){
             return "{\"error\":\"Офисов с id организации id="+orgId+" не найдено\"}";
         }
-        return views;
+        return packToData(views);
     }
 
 }

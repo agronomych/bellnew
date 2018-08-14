@@ -1,12 +1,8 @@
 package ru.bellintegrator.practice.organization.view;
 
-public class OrganizationView {
-
-    public Integer id;
+public class OrganizationView extends OrganizationViewList {
 
     public Integer version;
-
-    public String name;
 
     public String fullname;
 
@@ -17,8 +13,6 @@ public class OrganizationView {
     public String kpp;
 
     public String phone;
-
-    public Boolean isactive;
 
     @Override
     public String toString(){

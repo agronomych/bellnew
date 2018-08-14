@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ru.bellintegrator.practice.office.view.OfficeViewList;
 
 @Service
 public class OfficeServiceImpl implements OfficeService{
@@ -24,11 +25,9 @@ public class OfficeServiceImpl implements OfficeService{
     }
 
     @Override
-    public List<OfficeView> offices() throws SQLException {
+    public List<OfficeViewList> offices() throws SQLException {
         List<Office> offices = officeDao.all();
-        return offices.stream()
-                .map(mapOffice())
-                .collect(Collectors.toList());
+        return offices.stream().map(mapOffice()).collect(Collectors.toList());
     }
 
     @Override
@@ -46,15 +45,15 @@ public class OfficeServiceImpl implements OfficeService{
         return officeToView(officeDao.loadById(id));
     }
 
-    private Function<Office,OfficeView> mapOffice(){
+    private Function<Office,OfficeViewList> mapOffice(){
         return o -> {
-            return officeToView(o);
+            return officeToViewList(o);
         };
     }
 
     @Override
-    public List<OfficeView> loadByOrgId(int orgId) throws SQLException {
-        return officeDao.loadByOrgId(orgId).stream().map(this::officeToView).collect(Collectors.toList());
+    public List<OfficeViewList> loadByOrgId(int orgId) throws SQLException {
+        return officeDao.loadByOrgId(orgId).stream().map(this::officeToViewList).collect(Collectors.toList());
     }
 
     private Office viewToOffice(OfficeView view){
@@ -69,5 +68,12 @@ public class OfficeServiceImpl implements OfficeService{
         mapperFactory.classMap(OfficeView.class,Office.class);
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(office,OfficeView.class);
+    }
+
+    private OfficeViewList officeToViewList(Office office){
+        MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+        mapperFactory.classMap(OfficeViewList.class,Office.class);
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        return mapper.map(office,OfficeViewList.class);
     }
 }

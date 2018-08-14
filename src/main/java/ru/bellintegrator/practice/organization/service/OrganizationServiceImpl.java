@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.bellintegrator.practice.organization.dao.OrganizationDao;
 import ru.bellintegrator.practice.organization.model.Organization;
 import ru.bellintegrator.practice.organization.view.OrganizationView;
+import ru.bellintegrator.practice.organization.view.OrganizationViewList;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -25,7 +26,7 @@ public class OrganizationServiceImpl implements OrganizationService{
     }
 
     @Override
-    public List<OrganizationView> organizations() throws SQLException {
+    public List<OrganizationViewList> organizations() throws SQLException {
         List<Organization> offices = organizationDao.all();
         return offices.stream()
                 .map(mapOrganization())
@@ -47,10 +48,17 @@ public class OrganizationServiceImpl implements OrganizationService{
         return organizationToView(organizationDao.loadById(id));
     }
 
-    private Function<Organization,OrganizationView> mapOrganization(){
+    private Function<Organization,OrganizationViewList> mapOrganization(){
         return o -> {
-            return organizationToView(o);
+            return organizationToViewList(o);
         };
+    }
+
+    private OrganizationViewList organizationToViewList(Organization office){
+        MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+        mapperFactory.classMap(OrganizationViewList.class,Organization.class);
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        return mapper.map(office,OrganizationViewList.class);
     }
 
     private Organization viewToOrganization(OrganizationView view){

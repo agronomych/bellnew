@@ -1,20 +1,10 @@
 package ru.bellintegrator.practice.user.view;
 
-public class UserView {
-
-    public Integer id;
+public class UserView extends UserViewList{
 
     public Integer version;
 
     public Integer officeid;
-
-    public String firstname;
-
-    public String lastname;
-
-    public String middlename;
-
-    public String position;
 
     public Integer docid;
 

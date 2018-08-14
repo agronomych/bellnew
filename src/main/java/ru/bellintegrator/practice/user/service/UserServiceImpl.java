@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.bellintegrator.practice.user.dao.UserDao;
 import ru.bellintegrator.practice.user.model.User;
 import ru.bellintegrator.practice.user.view.UserView;
+import ru.bellintegrator.practice.user.view.UserViewList;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<UserView> users() throws SQLException {
+    public List<UserViewList> users() throws SQLException {
         List<User> offices = dao.all();
         return offices.stream()
                 .map(mapUser())
@@ -47,9 +48,9 @@ public class UserServiceImpl implements UserService{
         return userToView(dao.loadById(id));
     }
 
-    private Function<User,UserView> mapUser(){
+    private Function<User,UserViewList> mapUser(){
         return o -> {
-            return userToView(o);
+            return userToViewList(o);
         };
     }
 
@@ -65,5 +66,12 @@ public class UserServiceImpl implements UserService{
         mapperFactory.classMap(UserView.class,User.class);
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(office,UserView.class);
+    }
+
+    private UserViewList userToViewList(User office){
+        MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+        mapperFactory.classMap(UserViewList.class,User.class);
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        return mapper.map(office,UserViewList.class);
     }
 }
