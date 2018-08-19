@@ -60,16 +60,16 @@ public class UserDaoImpl implements UserDao {
         CriteriaUpdate<User> cUpdate = builder.createCriteriaUpdate(User.class);
         Root users = cUpdate.from(User.class);
         cUpdate.where(builder.equal(users.get("id"),user.getId()));
-        if (user.getPhone()!=null) cUpdate.set("phone",user.getPhone());
-        if (user.getFirstname()!=null) cUpdate.set("firstname",user.getFirstname());
-        if (user.getLastname()!=null) cUpdate.set("lastname",user.getLastname());
-        if (user.getMiddlename()!=null) cUpdate.set("middlename",user.getMiddlename());
-        if (user.getPosition()!=null) cUpdate.set("position",user.getPosition());
-        if (user.getOfficeid()!=null) cUpdate.set("officeid",user.getOfficeid());
-        if (user.getCitizenshipid()!=null) cUpdate.set("citizenshipid",user.getCitizenshipid());
-        if (user.getDocid()!=null) cUpdate.set("docid",user.getDocid());
-        if (user.getDocnumber()!=null) cUpdate.set("docnumber",user.getDocnumber());
-        if (user.getDocdate()!=null) cUpdate.set("docdate",user.getDocdate());
+        cUpdate.set("phone",user.getPhone());
+        cUpdate.set("firstname",user.getFirstname());
+        cUpdate.set("lastname",user.getLastname());
+        cUpdate.set("middlename",user.getMiddlename());
+        cUpdate.set("position",user.getPosition());
+        cUpdate.set("officeid",user.getOfficeid());
+        cUpdate.set("citizenshipid",user.getCitizenshipid());
+        cUpdate.set("docid",user.getDocid());
+        cUpdate.set("docnumber",user.getDocnumber());
+        cUpdate.set("docdate",user.getDocdate());
         Query query = em.createQuery(cUpdate);
         query.executeUpdate();
     }

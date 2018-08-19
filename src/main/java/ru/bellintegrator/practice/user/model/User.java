@@ -3,15 +3,11 @@ package ru.bellintegrator.practice.user.model;
 import ru.bellintegrator.practice.countries.model.Country;
 import ru.bellintegrator.practice.docs.model.Doc;
 import ru.bellintegrator.practice.office.model.Office;
-import ru.bellintegrator.practice.organization.model.Organization;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -25,43 +21,75 @@ public class User {
     @Version
     private Integer version;
 
+    @Column(name = "office_id")
     private Integer officeid;
 
+    /**
+     * имя пользователя
+     */
+    @Column(name = "first_name")
     private String firstname;
 
+    /**
+     * Фамилия пользователя
+     */
+    @Column(name = "last_name")
     private String lastname;
 
+    /**
+     * Отчество либо среднее имя
+     */
+    @Column(name = "middle_name")
     private String middlename;
 
+    /**
+     * Должность
+     */
     private String position;
 
+    /**
+     * Указатель на гражданство
+     */
+    @Column(name = "citizenship_id")
     private Integer citizenshipid;
 
+    /**
+     * Указатель на тип документа
+     */
+    @Column(name = "doc_id")
     private  Integer docid;
 
+    /**
+     * Телефон пользователя
+     */
     private String phone;
 
+    /**
+     * Номер документа
+     */
+    @Column(name = "doc_number")
     private String docnumber;
 
+    /**
+     * Дата выдачи документа
+     */
+    @Column(name = "doc_date")
     private String docdate;
 
+    @Column(name = "is_identified")
     private Boolean isidentified;
 
     @ManyToOne
-    @JoinColumn(name = "officeid", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "office_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Office office;
 
-    /*@ManyToOne
-    @JoinColumn(name = "organizationid", referencedColumnName = "id", insertable = false, updatable = false)
-    private Organization organization;*/
-
     @ManyToOne
-    @JoinColumn(name = "docid", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "doc_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Doc doc;
 
-    /*@ManyToOne
-    @JoinColumn(name = "countries")
-    private Country country;*/
+    @ManyToOne
+    @JoinColumn(name = "citizenship_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Country country;
 
     public User(){
 
@@ -171,14 +199,6 @@ public class User {
         this.office = office;
     }
 
-    /*public Organization getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
-    }*/
-
     public Doc getDoc() {
         return doc;
     }
@@ -187,11 +207,11 @@ public class User {
         this.doc = doc;
     }
 
-    /*public Country getCountry() {
+    public Country getCountry() {
         return country;
     }
 
     public void setCountry(Country country) {
         this.country = country;
-    }*/
+    }
 }

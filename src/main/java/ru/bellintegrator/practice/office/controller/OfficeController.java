@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import ru.bellintegrator.practice.office.service.OfficeService;
 import ru.bellintegrator.practice.office.view.OfficeView;
@@ -72,7 +74,10 @@ public class OfficeController {
 
     public Object saveOffice(@RequestBody OfficeView view) {
 
-        System.out.println(view);
+        if (view.name == null | view.address == null){
+            return "{\"error\":\"недостаточно параметров\"}";
+        }
+
         try{
             officeService.saveOffice(view);
         }
@@ -93,6 +98,10 @@ public class OfficeController {
             @ApiResponse(code = 500, message = "Failure")})
     @PostMapping("/update")
     public Object updateOffice(@RequestBody OfficeView view) {
+
+        if (view.id == null | view.address == null | view.name == null){
+            return "{\"error\":\"недостаточно параметров\"}";
+        }
         try{
             officeService.updateOffice(view);
         }
@@ -130,7 +139,9 @@ public class OfficeController {
     @ApiOperation(value = "orgId", nickname = "orgId", httpMethod = "POST")
     @PostMapping("/list/")
     @RequestMapping(value = "/list/", method = RequestMethod.POST)
+
     public @ResponseBody Object getByOrgId(@RequestParam() int orgId){
+
         List<OfficeViewList> views;
         try {
             views = officeService.loadByOrgId(orgId);

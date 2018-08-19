@@ -71,6 +71,12 @@ public class OrganizationController {
             @ApiResponse(code = 500, message = "Failure")})
     @PostMapping("/save")
     public Object saveOrganization(@RequestBody OrganizationView view) {
+
+        if (view.name == null | view.fullname == null | view.inn == null |
+                view.kpp == null | view.address == null){
+            return "{\"error\":\"недостаточно параметров\"}";
+        }
+
         try{
             organizationService.saveOrganization(view);
         }
@@ -91,6 +97,11 @@ public class OrganizationController {
             @ApiResponse(code = 500, message = "Failure")})
     @PostMapping("/update")
     public Object updateOrganization(@RequestBody OrganizationView view) {
+
+        if (view.id == null | view.address == null | view.name == null |
+                view.fullname == null | view.inn == null | view.kpp == null){
+            return "{\"error\":\"недостаточно параметров\"}";
+        }
         try{
             organizationService.updateOrganization(view);
         }

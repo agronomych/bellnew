@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "docs")
+@Table(name = "doc")
 public class Doc {
 
     @Id
@@ -30,6 +30,9 @@ public class Doc {
     @Column(nullable = false)
     private String name;
 
+    /**
+     * Список пользователей
+     */
     @OneToMany(mappedBy = "doc")
     private Set<User> users;
 

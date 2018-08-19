@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "offices")
+@Table(name = "office")
 public class Office {
 
     @Id
@@ -22,21 +22,41 @@ public class Office {
     @Version
     private Integer version;
 
+    /**
+     * Номер телефона
+     */
     private String phone;
 
+    /**
+     * имя офиса
+     */
     private String name;
 
+    /**
+     * Работает ли офис
+     */
+    @Column(name = "is_active")
     private Boolean isactive;
 
+    /**
+     * Адрес офиса
+     */
     private String address;
 
+    /**
+     * id организации - владельца офиса
+     */
+    @Column(name = "org_id")
     private Integer orgid;
 
+    /**
+     * Список пользователей офиса
+     */
     @OneToMany(mappedBy = "office")
     public Set<User> users;
 
     @ManyToOne
-    @JoinColumn(name = "orgid", insertable = false, updatable = false)
+    @JoinColumn(name = "org_id", insertable = false, updatable = false)
     public Organization organization;
 
     public Integer getOrgid() {

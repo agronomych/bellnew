@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "organizations")
+@Table(name = "organization")
 public class Organization {
 
     @Id
@@ -20,18 +20,41 @@ public class Organization {
     @Version
     private Integer version;
 
+    /**
+     * Название организации
+     */
     private String name;
 
-    private String inn;
-
+    /**
+     * Полное наименование организации
+     */
+    @Column(name = "full_name")
     private String fullname;
 
+    /**
+     * инн
+     */
+    private String inn;
+
+    /**
+     * КПП
+     */
     private String kpp;
 
+    /**
+     * Адрес организации
+     */
     private String address;
 
+    /**
+     * Номер телефона организации
+     */
     private String phone;
 
+    /**
+     * Работает ли организация
+     */
+    @Column(name = "is_active")
     private Boolean isactive;
 
     @OneToMany(mappedBy = "organization")

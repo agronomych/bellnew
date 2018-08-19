@@ -69,6 +69,11 @@ public class UserController {
             @ApiResponse(code = 500, message = "Failure")})
     @PostMapping("/save")
     public Object saveUser(@RequestBody UserView view) {
+
+        if (view.firstname == null | view.position == null){
+            return "{\"error\":\"недостаточно параметров\"}";
+        }
+
         try{
             userService.saveUser(view);
         }
@@ -89,6 +94,10 @@ public class UserController {
             @ApiResponse(code = 500, message = "Failure")})
     @PostMapping("/update")
     public Object updateUser(@RequestBody UserView view) {
+
+        if (view.id == null | view.firstname == null | view.position == null){
+            return "{\"error\":\"недостаточно параметров\"}";
+        }
         try{
             userService.updateUser(view);
         }

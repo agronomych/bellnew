@@ -65,13 +65,13 @@ public class OrganizationDaoImpl implements OrganizationDao{
         CriteriaUpdate<Organization> cUpdate = builder.createCriteriaUpdate(Organization.class);
         Root organizations = cUpdate.from(Organization.class);
         cUpdate.where(builder.equal(organizations.get("id"),organization.getId()));
-        if (organization.getIsactive()!=null) cUpdate.set("isactive",organization.getIsactive());
-        if (organization.getPhone()!=null) cUpdate.set("phone",organization.getPhone());
-        if (organization.getAddress()!=null) cUpdate.set("address",organization.getAddress());
-        if (organization.getName()!=null) cUpdate.set("name",organization.getName());
-        if (organization.getFullname()!=null) cUpdate.set("fullname",organization.getFullname());
-        if (organization.getInn()!=null) cUpdate.set("inn",organization.getInn());
-        if (organization.getKpp()!=null) cUpdate.set("kpp",organization.getKpp());
+        cUpdate.set("isactive",organization.getIsactive());
+        cUpdate.set("phone",organization.getPhone());
+        cUpdate.set("address",organization.getAddress());
+        cUpdate.set("name",organization.getName());
+        cUpdate.set("fullname",organization.getFullname());
+        cUpdate.set("inn",organization.getInn());
+        cUpdate.set("kpp",organization.getKpp());
 
         Query query = em.createQuery(cUpdate);
         query.executeUpdate();

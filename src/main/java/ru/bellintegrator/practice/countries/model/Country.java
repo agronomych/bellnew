@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table (name = "countries")
+@Table (name = "country")
 public class Country {
 
     @Id
@@ -32,8 +32,11 @@ public class Country {
     @Column(nullable = false)
     private String name;
 
-    /*@OneToMany(mappedBy = "country")
-    private Set<User> users;*/
+    /**
+     * Список пользователей
+     */
+    @OneToMany(mappedBy = "country")
+    private Set<User> users;
 
     public Integer getCode() {
         return code;
@@ -59,7 +62,7 @@ public class Country {
         this.id = id;
     }
 
-    /*public Set<User> getUsers() {
+    public Set<User> getUsers() {
         if (users == null){
             users = new HashSet<User>();
         }
@@ -68,7 +71,7 @@ public class Country {
 
     public void setUsers(Set<User> users) {
         this.users = users;
-    }*/
+    }
 
     @Override
     public String toString(){
